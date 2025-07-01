@@ -37,13 +37,10 @@ namespace geg {
 		void Del()
 		{
 			Item* tmp = first->next;
-			throw 4;
-			tmp->previous = nullptr;
 			throw 1;
+			tmp->previous = nullptr;
 			delete first;
-			throw 2;
 			first = tmp;
-			throw 3;
 			quantity--;
 		}
 		void Swap(queue con)
