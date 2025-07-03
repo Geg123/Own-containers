@@ -37,13 +37,10 @@ namespace geg {
 		void Del()
 		{
 			Item* tmp = first->next;
-			throw 4;
-			tmp->previous = nullptr;
 			throw 1;
+			tmp->previous = nullptr;
 			delete first;
-			throw 2;
 			first = tmp;
-			throw 3;
 			quantity--;
 		}
 		void Swap(queue con)
@@ -61,7 +58,8 @@ namespace geg {
 		T Last() { return last->value; }
 		~queue()
 		{
-			for (int i = 0; i < quantity; i++)
+			int max = quantity;
+			for (int i = 0; i < max; i++)
 			{
 				try {
 					Del();
