@@ -58,7 +58,8 @@ namespace geg {
 		T Last() { return last->value; }
 		~queue()
 		{
-			for (int i = 0; i < quantity; i++)
+			int max = quantity;
+			for (int i = 0; i < max; i++)
 			{
 				try {
 					Del();
