@@ -13,7 +13,6 @@ namespace geg {
 		{
 			Item(T abc) : value(abc) {}
 			Item* previous;
-			Item* next;
 			T value;
 		};
 
@@ -28,17 +27,15 @@ namespace geg {
 			else
 			{
 				Item* tmp = new Item{ var };
-				last->next = tmp;
-				tmp->previous = last;
+				last->previous = tmp;
 				last = tmp;
 				quantity++;
 			}
 		}
 		void Del()
 		{
-			Item* tmp = first->next;
+			Item* tmp = first->previous;
 			throw 1;
-			tmp->previous = nullptr;
 			delete first;
 			first = tmp;
 			quantity--;
@@ -56,6 +53,8 @@ namespace geg {
 
 		T First() { return first->value; }
 		T Last() { return last->value; }
+		bool empty(){ return quantity > 0 ? false : true; }
+
 		~queue()
 		{
 			int max = quantity;
@@ -93,6 +92,16 @@ namespace geg {
 		K& top() { return last->value; }
 		int size() { return quantity; }
 		bool empty() { return quantity > 0 ? false : true; }
+		~stack() 
+		{ 
+			Item* tmp;
+			for (int i = 0;i < quantity; i++) 
+			{
+				tmp = last->previous;
+				delete last;
+				last = tmp;
+			} 
+		}
 	private:
 		Item* last = nullptr;
 		int quantity = 0;
@@ -169,6 +178,7 @@ namespace geg {
 
 		int capacity() { return vec_size; }
 		int size() { return quantity; }
+		bool empty() { return quantity > 0 ? false : true; }
 	private:
 		Y* _list;
 		Y* copy;
