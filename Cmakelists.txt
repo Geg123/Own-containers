@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(Own-containers)
+
+add_library(OwnContainers INTERFACE 
+	include/geg/Stack.h
+	include/geg/Queue.h
+	include/geg/HashTable.h
+	include/geg/List.h
+	include/geg/Vector.h
+	include/geg/Containers.h
+)
