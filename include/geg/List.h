@@ -41,7 +41,13 @@ private:
 			else
 				throw "node doesn't exist";
 		}
-	};
+		bool operator == (iterator& right)
+			if(right.node == this.node)
+			{
+				return true;
+			}
+			else
+		};
 public:
 	list(int _size)
 	{
@@ -287,7 +293,7 @@ public:
 
 	iterator& end()
 	{
-		_end.node = last;
+		_end.node = last->next;
 		return _end;
 	}
 
