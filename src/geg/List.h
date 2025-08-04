@@ -20,7 +20,6 @@ private:
 		list* parent = nullptr;
 		Node* node = nullptr;
 		iterator(list* _parent) : parent(_parent){}
-		//iterator(Node* _node) : node(_node) {}
 
 		iterator& operator ++ ()
 		{
@@ -51,7 +50,13 @@ private:
 				}
 			}
 		}
-	};
+		bool operator == (iterator& right)
+			if(right.node == this.node)
+			{
+				return true;
+			}
+			else
+		};
 public:
 	list(int _size)
 	{
@@ -327,6 +332,7 @@ public:
 	iterator& end()
 	{
 		_end.node = nullptr;
+		_end.node = last->next;
 		return _end;
 	}
 
@@ -338,5 +344,4 @@ private:
 	iterator _begin{this};
 	iterator _end{this};
 	iterator pos{this};
-	//Node* iter_last;
 };
