@@ -40,13 +40,15 @@ public:
 	}
 	hash_table(int lenght_bucket_list)
 	{
-		n = lenght_bucket_list;
-		Bucket* tmp;
-		bucket_list = new Bucket[n];
-		for (int i = 0; i < n; i++)
-		{
-			tmp = bucket_list + i;
-			tmp->first_item = null_first;
+		if (lenght_bucket_list > 0) {
+			n = lenght_bucket_list;
+			Bucket* tmp;
+			bucket_list = new Bucket[n];
+			for (int i = 0; i < n; i++)
+			{
+				tmp = bucket_list + i;
+				tmp->first_item = null_first;
+			}
 		}
 	}
 
@@ -80,7 +82,6 @@ public:
 		Item* i_ptr = ptr_tmp->first_item;
 		U id_tmp;
 		bool until = true;
-		std::cout << tmp << "\n";
 		while (until)
 		{
 			id_tmp = i_ptr->id;
@@ -98,7 +99,7 @@ public:
 		}
 	}
 
-	void Del(U pre_hash)
+	void del(U pre_hash)
 	{
 		int hash_tmp = hashfunc(pre_hash);
 		int tmp = abs(hash_tmp % n);
@@ -145,34 +146,37 @@ public:
 
 	void rehash(int lenght)
 	{
-		Bucket* bucket_list_tmp = new Bucket[lenght];
-		Bucket* tmp;
-		for (int i = 0; i < lenght; i++)
-		{
-			tmp = bucket_list_tmp + i;
-			tmp->first_item = null_first;
-		}
-		Bucket* bucket_tmp;
-		Item* item_tmp;
-		Bucket* new_bucket_tmp;
-		for (int i = 0; i < n;i++)
-		{
-			bucket_tmp = bucket_list + i;
-			if (bucket_tmp->item_quantity > 0)
+		if (lenght > 0) {
+			Bucket* bucket_list_tmp = new Bucket[lenght];
+			Bucket* tmp;
+			for (int i = 0; i < lenght; i++)
 			{
-				item_tmp = bucket_tmp->first_item;
-
-				int hash = hashfunc(item_tmp->id);
-				int abs_hash = abs(hash % lenght);
-				new_bucket_tmp = bucket_list_tmp + abs_hash;
-				new_bucket_tmp->first_item = item_tmp;
+				tmp = bucket_list_tmp + i;
+				tmp->first_item = null_first;
 			}
+			Bucket* bucket_tmp;
+			Item* item_tmp;
+			Bucket* new_bucket_tmp;
+			for (int i = 0; i < n;i++)
+			{
+				bucket_tmp = bucket_list + i;
+				if (bucket_tmp->item_quantity > 0)
+				{
+					item_tmp = bucket_tmp->first_item;
+
+					int hash = hashfunc(item_tmp->id);
+					int abs_hash = abs(hash % lenght);
+					new_bucket_tmp = bucket_list_tmp + abs_hash;
+					new_bucket_tmp->first_item = item_tmp;
+				}
+			}
+			delete[] bucket_list;
+			bucket_list = bucket_list_tmp;
+			n = lenght;
 		}
-		delete[] bucket_list;
-		bucket_list = bucket_list_tmp;
-		n = lenght;
 	}
 
+	int bucket_count() { return n; }
 private:
 	struct Item
 	{

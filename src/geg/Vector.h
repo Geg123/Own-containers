@@ -3,6 +3,29 @@
 template<typename Y>
 class vector
 {
+private:
+	struct iterator
+	{
+		Y* item = nullptr;
+		iterator& operator ++ ()
+		{
+			if (list + vec_size - 1 >= (item + 1))
+			{
+				++item;
+				return *this;
+			}
+			else
+				throw"Out of range"
+		}
+		iterator& operator -- ()
+		{
+			if (list <= (item - 1))
+			{
+				--item;
+				return *this;
+			}
+		}
+	};
 public:
 	vector(){}
 	vector(std::initializer_list<Y> _list)
@@ -83,10 +106,24 @@ public:
 	int capacity() { return vec_size; }
 	int size() { return quantity; }
 	bool empty() { return quantity > 0 ? false : true; }
+
+	iterator& begin()
+	{
+		_begin.item = list;
+		return _begin;
+	}
+	
+	iterator& end()
+	{
+		_end.item = nullptr;
+		return _end;
+	}
 private:
 	Y* list = nullptr;
 	Y* copy = nullptr;
 	int quantity = 0;
 	int vec_size = 0;
 	int last_index = 0;
+	iterator _begin;
+	iterator _end;
 };

@@ -12,14 +12,15 @@ private:
 		Node() {}
 		Node(L _value) : value(_value) {}
 		Node(L _value, Node* _prev) : value(_value), prev(_prev) {}
-		
+
 	};
 
 	struct iterator
 	{
+		list* parent = nullptr;
 		Node* node = nullptr;
-		iterator(){}
-		iterator(Node* _node) : node(_node) {}
+		iterator(list* _parent) : parent(_parent){}
+		//iterator(Node* _node) : node(_node) {}
 
 		iterator& operator ++ ()
 		{
@@ -33,13 +34,22 @@ private:
 		}
 		iterator& operator -- ()
 		{
-			if (node->prev != nullptr)
-			{
-				node = node->prev;
-				return *this;
+			if (node != nullptr) {
+				if (node->prev != nullptr)
+				{
+					node = node->prev;
+					return *this;
+				}
+				else
+					throw "node doesn't exist";
 			}
-			else
-				throw "node doesn't exist";
+			else {
+				if (parent->size() > 0)
+				{
+					node = parent->last;
+					return *this;
+				}
+			}
 		}
 	};
 public:
@@ -77,12 +87,13 @@ public:
 	list(std::initializer_list<L> _list)
 	{
 		_size = _list.size();
-		first = new Node(_size);
+		const L* a = _list.begin();
+		first = new Node(*a);
 		Node* tmp = first;
 		Node* tmp2 = nullptr;
 		for (int i = 1; i < _size; i++)
 		{
-			const L* a = _list.begin() + i;
+			a = _list.begin() + i;
 			tmp2 = new Node(*a, tmp);
 			tmp->next = tmp2;
 			tmp = tmp2;
@@ -92,7 +103,24 @@ public:
 
 	list(list* right)
 	{
-
+		if (right->first != nullptr)
+		{
+			L val = right->first->value;
+			Node* rtmp = right->first->next;
+			Node* tmp = new Node(val);
+			Node* tmp2 = tmp;
+			_size++;
+			first = tmp;
+			while (rtmp != nullptr)
+			{
+				val = rtmp->value;
+				tmp = new Node(val, tmp2);
+				tmp2 = tmp;
+				rtmp = rtmp->next;
+				_size++;
+			}
+			last = tmp2;
+		}
 	}
 
 	~list()
@@ -129,11 +157,12 @@ public:
 
 	void push_back(L value)
 	{
-		
+
 		if (last == nullptr)
 		{
 			Node* tmp = new Node(value);
 			last = tmp;
+			first = tmp;
 		}
 		else
 		{
@@ -141,6 +170,7 @@ public:
 			last->next = tmp;
 			last = tmp;
 		}
+		_size++;
 	}
 
 	void push_front(L value)
@@ -149,6 +179,7 @@ public:
 		{
 			Node* tmp = new Node(value);
 			first = tmp;
+			last = tmp;
 		}
 		else
 		{
@@ -156,11 +187,12 @@ public:
 			tmp->next = first;
 			first = tmp;
 		}
+		_size++;
 	}
 
 	void pop_back()
-	{	
-		if (last != nullptr) 
+	{
+		if (last != nullptr)
 		{
 			if (last->prev != nullptr)
 			{
@@ -173,6 +205,7 @@ public:
 				delete last;
 				last = nullptr;
 			}
+			_size--;
 		}
 		else
 			throw "last node doesn't exist";
@@ -193,6 +226,7 @@ public:
 				delete first;
 				first = nullptr;
 			}
+			_size--;
 		}
 		else
 			throw "first node doesn't exist";
@@ -210,33 +244,39 @@ public:
 		}
 		_size = 0;
 		last = nullptr;
+		first = nullptr;
 	}
 
 	void assign(std::initializer_list<L> _list)
 	{
 		this->clear();
 		_size = _list.size();
-		first = new Node(*_list);
+		const L* a = _list.begin();
+		first = new Node(*a);
 		Node* tmp = first;
-		Node* tmp2;
+		Node* tmp2 = nullptr;
 		for (int i = 1; i < _size; i++)
 		{
-			tmp2 = new Node(*(_list + i), tmp);
+			a = _list.begin() + i;
+			tmp2 = new Node(*a, tmp);
 			tmp->next = tmp2;
 			tmp = tmp2;
 		}
+		last = tmp2;
 	}
-	
-	void assign(int _size, L val)
+
+	void assign(int size, L val)
 	{
 		this->clear();
-		first = new Node(val);
-		_size++;
-		last = first;
+		if (size != 0) {
+			first = new Node(val);
+			_size++;
+			last = first;
+		}
 		Node* tmp = first;
-		for (int i = 0; i < _size - 1; i++)
+		for (int i = 0; i < size - 1; i++)
 		{
-			last = new Node;
+			last = new Node(val);
 			tmp->next = last;
 			last->prev = tmp;
 			tmp = tmp->next;
@@ -257,16 +297,15 @@ public:
 			_size--;
 		}
 		tmpb = end_.node;
-		tmpb = tmpb->next;
-		while (tmpb != nullptr)
-		{
-			tmp = tmpb->next;
-			delete tmpb;
-			tmpb = tmp;
-			_size--;
-		}
+		last = tmpb->prev;
+			while (tmpb != nullptr)
+			{
+				tmp = tmpb->next;
+				delete tmpb;
+				tmpb = tmp;
+				_size--;
+			}
 		first = begin_.node;
-		last = end_.node;
 	}
 
 	void swap(list* right)
@@ -287,15 +326,17 @@ public:
 
 	iterator& end()
 	{
-		_end.node = last;
+		_end.node = nullptr;
 		return _end;
 	}
 
 private:
+
 	Node* first = nullptr;
 	Node* last = nullptr;
 	int _size = 0;
-	iterator _begin;
-	iterator _end;
-	iterator pos;
+	iterator _begin{this};
+	iterator _end{this};
+	iterator pos{this};
+	//Node* iter_last;
 };
