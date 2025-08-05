@@ -24,6 +24,8 @@ private:
 				--item;
 				return *this;
 			}
+			else
+				throw"Out of range"
 		}
 	};
 public:
@@ -115,7 +117,7 @@ public:
 	
 	iterator& end()
 	{
-		_end.item = nullptr;
+		_end.item = list + last_index;
 		return _end;
 	}
 private:
