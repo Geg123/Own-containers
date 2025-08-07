@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "../src/geg/Containers.h"
-
+ 
 geg::vector<int> _vector{ 1,2,9,5,94 };
 geg::list<std::string> _list = {"123","dfk"};
 geg::queue<char> _queue;
@@ -9,6 +9,7 @@ geg::hash_table<std::string,int> _htable;
 geg::stack<int> _stack;
 geg::stack<int> _stack2;
 
+// я знаю, что глобальные переменные - плохо, но здесь сь они кстати
 bool front_bool = false;
 bool back_bool = false;
 bool size_bool = false;
