@@ -91,7 +91,7 @@ public:
 			{
 				if (i_ptr->next == null_item)
 				{
-					throw "Item with same id doesn't exist";
+					return 0;
 				}
 				else
 					i_ptr = i_ptr->next;
@@ -108,7 +108,7 @@ public:
 		while (i_ptr->id != pre_hash) 
 		{ i_ptr = i_ptr->next; 
 		if (i_ptr == null_item)
-			throw "Not item with same id";
+			return 0;
 		}
 		if (i_ptr == (ptr_tmp->first_item))
 		{
@@ -136,7 +136,7 @@ public:
 		}
 		else
 		{ 
-			throw "Out of bucket list range";
+			return 0;
 		}
 	}
 

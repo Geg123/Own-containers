@@ -29,7 +29,7 @@ private:
 				return *this;
 			}
 			else
-				throw "node doesn't exist";
+				return 0;
 		}
 		iterator& operator -- ()
 		{
@@ -40,7 +40,7 @@ private:
 					return *this;
 				}
 				else
-					throw "node doesn't exist";
+					return 0;
 			}
 			else {
 				if (parent->size() > 0)
@@ -149,7 +149,7 @@ public:
 		if (first != nullptr)
 			return first->value;
 		else
-			throw "first node of list doesn't exist";
+			return 0;
 	}
 
 	L& back()
@@ -157,7 +157,7 @@ public:
 		if (last != nullptr)
 			return last->value;
 		else
-			throw "last node of list doesn't exist";
+			return 0;
 	}
 
 	void push_back(L value)
@@ -213,7 +213,7 @@ public:
 			_size--;
 		}
 		else
-			throw "last node doesn't exist";
+			return 0;
 	}
 
 	void pop_front()
@@ -234,7 +234,7 @@ public:
 			_size--;
 		}
 		else
-			throw "first node doesn't exist";
+			return 0;
 	}
 
 	void clear()
@@ -332,7 +332,6 @@ public:
 	iterator& end()
 	{
 		_end.node = nullptr;
-		_end.node = last->next;
 		return _end;
 	}
 

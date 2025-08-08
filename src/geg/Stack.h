@@ -19,14 +19,14 @@ public:
 			quantity--;
 		}
 		else
-			throw "Can't pop not existing item";
+			return 0;
 	}
 	K& top() {
 		if (last != nullptr) {
 			return last->value;
 		}
 		else
-			throw "Can't give out not exiting item";
+			return 0;
 	}
 	int size() { return quantity; }
 	bool empty() { return quantity > 0 ? false : true; }

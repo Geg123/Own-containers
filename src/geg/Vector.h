@@ -15,7 +15,7 @@ private:
 				return *this;
 			}
 			else
-				throw"Out of range"
+				return 0;
 		}
 		iterator& operator -- ()
 		{
@@ -25,7 +25,7 @@ private:
 				return *this;
 			}
 			else
-				throw"Out of range"
+				return 0;
 		}
 	};
 public:
@@ -64,7 +64,7 @@ public:
 		}
 		else
 		{
-			throw "Index out of range";
+			return 0;
 		}
 	}
 
@@ -95,14 +95,14 @@ public:
 		if (list != nullptr)
 			return *list;
 		else
-			throw "first element doesn't exist";
+			return 0;
 	}
 	Y& back() 
 	{
 		if (list + last_index != nullptr)
 			return *(list + last_index);
 		else
-			throw "first element doesn't exist";
+			return 0;
 	}
 
 	int capacity() { return vec_size; }
